@@ -6,8 +6,11 @@ window.APP_CONFIG = {
     // Якщо порожньо — топ показує лише тебе, а прогрес зберігається в Telegram.
     databaseURL: "https://brain-champ-10100-default-rtdb.europe-west1.firebasedatabase.app/"
   },
+  TG_APP_LINK: "http://t.me/brain_champ_ua_bot/"
+  },  
+ 
   game: {
-    practiceRounds: 10     // раундів у звичайному тренуванні (бали не зараховуються)
+  practiceRounds: 10     // раундів у звичайному тренуванні (бали не зараховуються)
   },
   daily: {
     tasks: 5,              // завдань у щоденному тренуванні
