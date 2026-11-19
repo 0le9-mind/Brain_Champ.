@@ -4,7 +4,7 @@ window.APP_CONFIG = {
     // Вставити посилання на Realtime Database, наприклад:
     // "https://brain-champ-12345-default-rtdb.europe-west1.firebasedatabase.app"
     // Якщо порожньо — топ показує лише тебе, а прогрес зберігається в Telegram.
-    databaseURL: ""
+    databaseURL: "https://brain-champ-10100-default-rtdb.europe-west1.firebasedatabase.app/"
   },
   game: {
     practiceRounds: 10     // раундів у звичайному тренуванні (бали не зараховуються)
