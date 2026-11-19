@@ -1,0 +1,110 @@
+// Переклади uk/en/ru
+"use strict";
+/* ===== Переклади ===== */
+const TEXTS = {
+uk: {
+  choose_lang: "🇺🇦 Обери мову\n🇬🇧 Choose your language\n🇷🇺 Выбери язык",
+  ask_name: "✍️ Як тебе звати? Введи ім'я або нікнейм (2–20 символів).",
+  name_invalid: "⚠️ Ім'я має містити від 2 до 20 символів.",
+  btn_save: "✅ Зберегти",
+  name_saved: "✅ Профіль збережено, {name}!",
+  menu_title: "Привіт, {name}!\nМозковий рейтинг: {rating}/1000",
+  btn_play: "🎮 Грати", btn_profile: "👤 Профіль", btn_top: "🏆 Топ гравців", btn_settings: "⚙️ Налаштування",
+  btn_menu: "🏠 Меню", btn_quit: "✖️ Вийти", btn_again: "🔄 Ще раз",
+  btn_rename: "✏️ Змінити ім'я", btn_language: "🌍 Змінити мову",
+  choose_game: "🎮 Обери гру",
+  game_math: "🧮 Математичний спринт", game_memory: "🧩 Пошук числа", game_reflex: "⚡ Швидкий вибір", game_logic: "🔗 Логічні ланцюжки",
+  desc_math: "швидка арифметика на час", desc_memory: "запам'ятай позиції чисел",
+  desc_reflex: "колір, напрямок, предмет", desc_logic: "продовж послідовність",
+  round: "Раунд {n}/{total}",
+  toast_ok: "✅ Правильно! +{pts}", toast_wrong: "❌ Неправильно", toast_timeout: "⏱ Забагато часу",
+  result: "🏁 {game} завершено!\n\n⭐ Результат: {score}/1000\n✅ Правильних: {correct}/{total}\n🏆 Рекорд: {best}\n🧠 Мозковий рейтинг: {rating}/1000",
+  record_new: "\n\n🎉 Новий особистий рекорд!",
+  profile: "👤 {name}\n🌍 Мова: {lang}\n\n🧠 Мозковий рейтинг: {rating}/1000\n🎖 Рівень: {title}\n🎮 Ігор зіграно: {plays}\n\n{lines}",
+  profile_line: "{game}: 🏆 {best} · ігор: {plays}",
+  tl_0: "Новачок", tl_1: "Учень", tl_2: "Знавець", tl_3: "Майстер", tl_4: "Чемпіон",
+  settings_title: "⚙️ Налаштування", lang_changed: "✅ Мову змінено.",
+  top_title: "🏆 Топ гравців", top_empty: "Поки що ніхто не грав. Будь першим!",
+  top_offline: "Щоб бачити топ усіх гравців, підключи Firebase у config.js. Зараз показано лише тебе.",
+  top_error: "Не вдалося завантажити топ. Спробуй пізніше.", loading: "Завантаження…",
+  mem_show: "👀 Запам'ятай, де які числа!\nПотім натискай їх по порядку: 1 → {k}",
+  mem_play: "👆 Натискай клітинки по порядку: 1 → {k}\nЗнайдено: {found}/{k}",
+  reflex_color: "Натисни колір: {name}", reflex_dir: "Обери напрямок: {name}", reflex_find: "Знайди: {target}",
+  logic_seq: "Яке число наступне?", logic_shape: "Яка фігура наступна?",
+  color_red: "червоний", color_green: "зелений", color_blue: "синій", color_yellow: "жовтий", color_purple: "фіолетовий", color_orange: "помаранчевий",
+  dir_left: "ЛІВОРУЧ", dir_up: "ВГОРУ", dir_down: "ВНИЗ", dir_right: "ПРАВОРУЧ"
+},
+en: {
+  choose_lang: "🇺🇦 Обери мову\n🇬🇧 Choose your language\n🇷🇺 Выбери язык",
+  ask_name: "✍️ What's your name? Enter a name or nickname (2–20 characters).",
+  name_invalid: "⚠️ The name must be 2 to 20 characters long.",
+  btn_save: "✅ Save",
+  name_saved: "✅ Profile saved, {name}!",
+  menu_title: "Hi, {name}!\nBrain rating: {rating}/1000",
+  btn_play: "🎮 Play", btn_profile: "👤 Profile", btn_top: "🏆 Leaderboard", btn_settings: "⚙️ Settings",
+  btn_menu: "🏠 Menu", btn_quit: "✖️ Quit", btn_again: "🔄 Again",
+  btn_rename: "✏️ Change name", btn_language: "🌍 Change language",
+  choose_game: "🎮 Choose a game",
+  game_math: "🧮 Math Sprint", game_memory: "🧩 Number Search", game_reflex: "⚡ Quick Tap", game_logic: "🔗 Logic Chains",
+  desc_math: "fast timed arithmetic", desc_memory: "memorize number positions",
+  desc_reflex: "colour, direction, object", desc_logic: "continue the sequence",
+  round: "Round {n}/{total}",
+  toast_ok: "✅ Correct! +{pts}", toast_wrong: "❌ Wrong", toast_timeout: "⏱ Too slow",
+  result: "🏁 {game} finished!\n\n⭐ Score: {score}/1000\n✅ Correct: {correct}/{total}\n🏆 Best: {best}\n🧠 Brain rating: {rating}/1000",
+  record_new: "\n\n🎉 New personal best!",
+  profile: "👤 {name}\n🌍 Language: {lang}\n\n🧠 Brain rating: {rating}/1000\n🎖 Level: {title}\n🎮 Games played: {plays}\n\n{lines}",
+  profile_line: "{game}: 🏆 {best} · plays: {plays}",
+  tl_0: "Rookie", tl_1: "Apprentice", tl_2: "Expert", tl_3: "Master", tl_4: "Champion",
+  settings_title: "⚙️ Settings", lang_changed: "✅ Language changed.",
+  top_title: "🏆 Leaderboard", top_empty: "Nobody has played yet. Be the first!",
+  top_offline: "To see all players, connect Firebase in config.js. Only you are shown for now.",
+  top_error: "Could not load the leaderboard. Try again later.", loading: "Loading…",
+  mem_show: "👀 Memorize where the numbers are!\nThen tap them in order: 1 → {k}",
+  mem_play: "👆 Tap the cells in order: 1 → {k}\nFound: {found}/{k}",
+  reflex_color: "Tap the colour: {name}", reflex_dir: "Choose the direction: {name}", reflex_find: "Find: {target}",
+  logic_seq: "What number comes next?", logic_shape: "Which shape comes next?",
+  color_red: "red", color_green: "green", color_blue: "blue", color_yellow: "yellow", color_purple: "purple", color_orange: "orange",
+  dir_left: "LEFT", dir_up: "UP", dir_down: "DOWN", dir_right: "RIGHT"
+},
+ru: {
+  choose_lang: "🇺🇦 Обери мову\n🇬🇧 Choose your language\n🇷🇺 Выбери язык",
+  ask_name: "✍️ Как тебя зовут? Введи имя или ник (2–20 символов).",
+  name_invalid: "⚠️ Имя должно содержать от 2 до 20 символов.",
+  btn_save: "✅ Сохранить",
+  name_saved: "✅ Профиль сохранён, {name}!",
+  menu_title: "Привет, {name}!\nМозговой рейтинг: {rating}/1000",
+  btn_play: "🎮 Играть", btn_profile: "👤 Профиль", btn_top: "🏆 Топ игроков", btn_settings: "⚙️ Настройки",
+  btn_menu: "🏠 Меню", btn_quit: "✖️ Выйти", btn_again: "🔄 Ещё раз",
+  btn_rename: "✏️ Сменить имя", btn_language: "🌍 Сменить язык",
+  choose_game: "🎮 Выбери игру",
+  game_math: "🧮 Математический спринт", game_memory: "🧩 Поиск числа", game_reflex: "⚡ Быстрый выбор", game_logic: "🔗 Логические цепочки",
+  desc_math: "быстрая арифметика на время", desc_memory: "запомни позиции чисел",
+  desc_reflex: "цвет, направление, предмет", desc_logic: "продолжи последовательность",
+  round: "Раунд {n}/{total}",
+  toast_ok: "✅ Верно! +{pts}", toast_wrong: "❌ Неверно", toast_timeout: "⏱ Слишком долго",
+  result: "🏁 {game} завершена!\n\n⭐ Результат: {score}/1000\n✅ Правильных: {correct}/{total}\n🏆 Рекорд: {best}\n🧠 Мозговой рейтинг: {rating}/1000",
+  record_new: "\n\n🎉 Новый личный рекорд!",
+  profile: "👤 {name}\n🌍 Язык: {lang}\n\n🧠 Мозговой рейтинг: {rating}/1000\n🎖 Уровень: {title}\n🎮 Игр сыграно: {plays}\n\n{lines}",
+  profile_line: "{game}: 🏆 {best} · игр: {plays}",
+  tl_0: "Новичок", tl_1: "Ученик", tl_2: "Знаток", tl_3: "Мастер", tl_4: "Чемпион",
+  settings_title: "⚙️ Настройки", lang_changed: "✅ Язык изменён.",
+  top_title: "🏆 Топ игроков", top_empty: "Пока никто не играл. Будь первым!",
+  top_offline: "Чтобы видеть топ всех игроков, подключи Firebase в config.js. Сейчас показан только ты.",
+  top_error: "Не удалось загрузить топ. Попробуй позже.", loading: "Загрузка…",
+  mem_show: "👀 Запомни, где какие числа!\nПотом нажимай их по порядку: 1 → {k}",
+  mem_play: "👆 Нажимай клетки по порядку: 1 → {k}\nНайдено: {found}/{k}",
+  reflex_color: "Нажми цвет: {name}", reflex_dir: "Выбери направление: {name}", reflex_find: "Найди: {target}",
+  logic_seq: "Какое число следующее?", logic_shape: "Какая фигура следующая?",
+  color_red: "красный", color_green: "зелёный", color_blue: "синий", color_yellow: "жёлтый", color_purple: "фиолетовый", color_orange: "оранжевый",
+  dir_left: "ВЛЕВО", dir_up: "ВВЕРХ", dir_down: "ВНИЗ", dir_right: "ВПРАВО"
+}
+};
+const DEF_LANG = LANGS.includes(CFG.defaultLanguage) ? CFG.defaultLanguage : "uk";
+let lang = DEF_LANG;
+const t = (key, vars) => {
+  let s = (TEXTS[lang] && TEXTS[lang][key]) || TEXTS[DEF_LANG][key] || key;
+  if (vars) for (const k in vars) s = s.split("{" + k + "}").join(vars[k]);
+  return s;
+};
+
+

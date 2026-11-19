@@ -1,0 +1,29 @@
+:root{--bg:#11142b;--card:#1b2040;--card2:#262c57;--txt:#eef1ff;--mut:#9aa3d6;--acc:#7cf29a;--warn:#ffd166;--bad:#ff6b81;--good:#34d27b}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+body{min-height:100vh;display:flex;justify-content:center}
+#app{width:100%;max-width:520px;padding:16px 16px calc(16px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:12px}
+h1{margin:4px 0;font-size:26px;text-align:center}
+.card{background:var(--card);border-radius:16px;padding:16px;white-space:pre-line;line-height:1.45}
+.btn{display:block;width:100%;border:0;border-radius:14px;padding:15px 12px;font-size:17px;font-weight:600;color:var(--txt);background:var(--card2);cursor:pointer;text-align:center}
+.btn:active{transform:scale(.98)}
+.btn.main{background:var(--acc);color:#0b2a14}
+.row{display:flex;gap:10px}.row .btn{flex:1}
+.grid{display:grid;gap:10px}
+.opt{font-size:26px;padding:20px 8px}
+.opt.ok{background:var(--good);color:#06240f}.opt.bad{background:var(--bad);color:#2b0610}
+.gh{display:flex;justify-content:space-between;font-size:14px;color:var(--mut);gap:8px}
+.bar{height:8px;border-radius:6px;background:var(--card);overflow:hidden}
+.bar i{display:block;height:100%;width:100%;background:var(--acc);transform-origin:left;animation:shrink linear forwards}
+@keyframes shrink{from{transform:scaleX(1)}to{transform:scaleX(0)}}
+.q{font-size:34px;font-weight:700;text-align:center;padding:18px 0;white-space:pre-line}
+.q.sm{font-size:26px}
+.hint{text-align:center;color:var(--mut);white-space:pre-line}
+.fb{text-align:center;min-height:24px;font-weight:700}
+.cell{aspect-ratio:1;font-size:34px;font-weight:700;padding:0;display:flex;align-items:center;justify-content:center}
+.cell.found{background:var(--good);color:#06240f}
+.big{font-size:44px;text-align:center;font-weight:800;color:var(--warn)}
+input{width:100%;padding:14px;border-radius:12px;border:2px solid var(--card2);background:var(--card);color:var(--txt);font-size:18px}
+.me{color:var(--acc);font-weight:700}
+.mut{color:var(--mut);font-size:14px}
+@media (orientation:landscape) and (max-height:480px){#app{max-width:760px}.q{font-size:26px;padding:6px 0}.opt{padding:12px 6px}.cell{aspect-ratio:auto;height:52px}}
