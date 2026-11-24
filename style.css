@@ -55,3 +55,6 @@ input{width:100%;padding:14px;border-radius:12px;border:2px solid var(--card2);b
 .win.bad{background:var(--bad);border-color:#ff9aa8}
 .win.miss{background:#0d1330;border-color:#ffd33d}
 .sci{border-left:4px solid var(--warn);font-size:15px}.sci .mut{margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em;font-size:12px}
+.brain{text-align:center;white-space:normal}.brain svg{width:70%;max-width:260px;margin:6px auto;display:block}
+.bp{font-size:30px;font-weight:800;color:var(--acc)}.brain .mut{margin-top:6px}
+@keyframes gzin{from{opacity:0}to{opacity:1}}.gz{animation:gzin .45s ease both}

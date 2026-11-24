@@ -52,7 +52,8 @@ function normalizeProfile(p) {
 }
 function ensureToday() {
   const d = dateKey();
-  if (!P.today || P.today.d !== d) P.today = {d, parts: [], done: false, score: 0};
+  if (!P.today || P.today.d !== d) P.today = {d, parts: [], cor: [], done: false, score: 0};
+  if (!P.today.cor) P.today.cor = [];
   return P.today;
 }
 const persist = () => store.set("bc_profile", JSON.stringify(P));

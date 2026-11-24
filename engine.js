@@ -103,6 +103,7 @@ function endGame() {
 function endDailyTask(sess) {
   if (P.today.d !== sess.dayKey) { screenMenu(); return; }   // день змінився під час гри
   P.today.parts[sess.taskIdx] = sess.score;
+  P.today.cor[sess.taskIdx] = sess.correct;
   P.best[sess.game] = Math.max(P.best[sess.game] || 0, sess.score);
   if (P.today.parts.length >= DAILY.tasks) {
     const info = completeDay();
@@ -121,8 +122,10 @@ function completeDay() {
   P.lastDate = td.d;
   P.recent.push({d: td.d, s: score}); P.recent = P.recent.slice(-7);
   if (isBest) P.bestDay = score;
+  const n = DAILY.tasks * DAILY.roundsPerTask, cor = td.cor.reduce((a, b) => a + (b || 0), 0);
+  td.acc = td.cor.filter(x => x !== undefined).length >= DAILY.tasks ? Math.min(1, cor / n) : Math.min(1, score / DAY_MAX);
   td.done = true; td.score = score;
-  return {score, isBest};
+  return {score, isBest, acc: td.acc, cor, n};
 }
 
 /* ----- Події ----- */

@@ -45,6 +45,28 @@ function practiceComment(correct, rounds) {
   return t(err === 0 ? "pc_perfect" : err <= 2 ? "pc_good" : correct / rounds >= 0.4 ? "pc_mid" : "pc_poor");
 }
 
+/* ----- Мозок із зеленим заповненням (чим менше помилок, тим більше зеленого) ----- */
+function brainHtml(pct, caption) {
+  pct = Math.max(0, Math.min(1, pct || 0));
+  const HEMI = "M98 14C70 6 36 20 26 52C14 62 12 90 26 104C22 124 40 146 66 146C80 156 92 150 98 140Z";
+  const GYRI = ["M44 48C56 40 68 50 80 42", "M32 78C48 66 60 84 78 72", "M36 108C50 98 62 116 80 104", "M60 128C70 120 80 132 90 124", "M54 28C62 22 76 28 86 22"];
+  const z = pct * 8;   // 8 зон: знизу вгору, ліва й права півкулі по черзі
+  let zones = "";
+  for (let i = 0; i < 8; i++) {
+    const frac = Math.max(0, Math.min(1, z - i));
+    const band = Math.floor(i / 2), left = i % 2 === 0, h = 37, y = 158 - (band + 1) * h;
+    zones += `<rect x="${left ? 0 : 100}" y="${y}" width="100" height="${h}" fill="#323b73"/>`;
+    if (frac > 0) zones += `<rect class="gz" style="animation-delay:${i * 130}ms" x="${left ? 0 : 100}" y="${y}" width="100" height="${h}" fill="#3ddc84" fill-opacity="${frac.toFixed(2)}"/>`;
+  }
+  const p = Math.round(pct * 100);
+  const svg = `<svg viewBox="0 0 200 170" role="img" aria-label="${p}%"><defs><clipPath id="bclip"><path d="${HEMI}"/><path d="${HEMI}" transform="translate(200,0) scale(-1,1)"/></clipPath></defs>` +
+    `<g clip-path="url(#bclip)">${zones}</g>` +
+    `<g fill="none" stroke="#0b1030" stroke-opacity=".55" stroke-width="3" stroke-linecap="round">${GYRI.map(d => `<path d="${d}"/>`).join("")}<g transform="translate(200,0) scale(-1,1)">${GYRI.map(d => `<path d="${d}"/>`).join("")}</g></g>` +
+    `<g fill="none" stroke="#9aa3d6" stroke-width="3" stroke-linejoin="round"><path d="${HEMI}"/><path d="${HEMI}" transform="translate(200,0) scale(-1,1)"/></g></svg>`;
+  return `<div class="card brain"><div class="mut">${esc(t("brain_title"))}</div>${svg}<div class="bp">${p}%</div>` +
+    (caption ? `<div>${esc(caption)}</div>` : "") + `<div class="mut">${esc(t("brain_hint"))}</div></div>`;
+}
+
 /* ----- Початок ----- */
 function screenLang() {
   lang = DEF_LANG;
@@ -82,7 +104,7 @@ function screenDaily() {
   }).join("");
   if (td.done) {
     view(`<h1>${esc(t("daily_title"))}</h1>` + card(t("daily_finished", {score: td.score, max: DAY_MAX})) +
-      sciHtml(td.score / DAY_MAX) + `<div class="card">${list}</div>` + btn("menu", t("btn_menu")));
+      sciHtml(td.score / DAY_MAX) + brainHtml(td.acc !== undefined ? td.acc : td.score / DAY_MAX, td.cor.length >= DAILY.tasks ? t("brain_caption", {c: td.cor.reduce((a, b) => a + (b || 0), 0), n: DAILY.tasks * DAILY.roundsPerTask}) : "") + `<div class="card">${list}</div>` + btn("menu", t("btn_menu")));
   } else {
     view(`<h1>${esc(t("daily_title"))}</h1>` + card(t("daily_intro", {total: DAILY.tasks})) +
       `<div class="card">${list}</div>` +
@@ -101,6 +123,7 @@ function screenTaskIntro(idx) {
 function screenTaskDone(sess) {
   view(`<h1>${esc(t("task_title", {n: sess.taskIdx + 1, total: DAILY.tasks}))}</h1>` +
     card(t("task_done", {game: t("g_" + sess.game), score: sess.score, max: TASK_MAX, correct: sess.correct, total: sess.rounds})) +
+    brainHtml(sess.correct / sess.rounds, t("brain_caption", {c: sess.correct, n: sess.rounds})) +
     mascotHtml(practiceComment(sess.correct, sess.rounds)) +
     btn("dstart", t("btn_next"), "main", `data-v="${sess.taskIdx + 1}"`) + btn("menu", t("btn_menu")));
 }
@@ -108,7 +131,7 @@ function screenTaskDone(sess) {
 function screenDayDone(info) {
   view(`<h1>🏁</h1>` +
     card(t("day_done", {score: info.score, max: DAY_MAX, streak: curStreak(), rating: rating(), total: P.total}) + (info.isBest ? t("day_best") : "")) +
-    sciHtml(info.score / DAY_MAX) + btn("top", t("btn_top")) + btn("menu", t("btn_menu"), "main"));
+    brainHtml(info.acc, t("brain_caption", {c: info.cor, n: info.n})) + sciHtml(info.score / DAY_MAX) + btn("top", t("btn_top")) + btn("menu", t("btn_menu"), "main"));
 }
 
 /* ----- Звичайне тренування (без балів) ----- */
@@ -130,6 +153,7 @@ function screenLevel(game) {
 function screenPracticeDone(sess) {
   view(`<h1>🏁</h1>` +
     card(t("practice_result", {game: t("g_" + sess.game), correct: sess.correct, total: sess.rounds})) +
+    brainHtml(sess.correct / sess.rounds, t("brain_caption", {c: sess.correct, n: sess.rounds})) +
     mascotHtml(practiceComment(sess.correct, sess.rounds)) +
     btn("plevel", t("btn_again"), "main", `data-v="${sess.game}" data-l="${sess.lvl}"`) +
     `<div class="row">${btn("pgame", t("choose_level"), "", `data-v="${sess.game}"`)}${btn("menu", t("btn_menu"))}</div>`);
