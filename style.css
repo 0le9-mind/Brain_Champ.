@@ -45,3 +45,12 @@ input{width:100%;padding:14px;border-radius:12px;border:2px solid var(--card2);b
 .prow .pos{width:30px;text-align:center}
 .prow .pn{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 @media (orientation:landscape) and (max-height:480px){#app{max-width:760px}.q{font-size:24px;padding:4px 0}.opt{padding:12px 6px}.cell{aspect-ratio:auto;height:52px}.simon{aspect-ratio:auto;height:60px}.logo{width:30%}}
+
+.tower{width:min(78%,300px);margin:0 auto;padding:10px 10px 0;background:linear-gradient(#1c2a55,#16203f);border:3px solid #3a4a86;border-radius:10px 10px 0 0;position:relative;margin-top:14px}
+.tower .antenna{position:absolute;left:50%;top:-16px;width:4px;height:14px;background:#6c7bb8;transform:translateX(-50%)}
+.tower .grid{gap:7px}
+.tower .door{width:34%;height:26px;margin:10px auto 0;background:#3a4a86;border-radius:6px 6px 0 0}
+.win{aspect-ratio:1;padding:0;background:#0d1330;border:2px solid #2d3a70;border-radius:4px}
+.win.lit{background:#ffd33d;border-color:#ffe98a;box-shadow:0 0 12px 2px rgba(255,211,61,.65)}
+.win.bad{background:var(--bad);border-color:#ff9aa8}
+.win.miss{background:#0d1330;border-color:#ffd33d}

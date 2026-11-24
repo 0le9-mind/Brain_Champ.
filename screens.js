@@ -26,6 +26,12 @@ function bubbleText() {
 }
 const mascotHtml = (text, withId) =>
   `<div class="mascot"><img class="mimg" src="mascot.jpg" alt="" data-act="tip"><div class="bubble" ${withId ? 'id="bubble"' : ""}>${esc(text)}</div></div>`;
+// Порівняння з видатними вченими за результатом щоденного тренування (стабільне протягом дня)
+function sciComment(ratio) {
+  const tier = ratio >= SCI.high ? ["einstein"] : ratio >= SCI.mid ? ["pascal", "newton"] : ["plato", "socrates", "aristotle"];
+  const k = hashStr("sci:" + dateKey());
+  return t("sci_" + tier[k % tier.length] + "_" + (1 + Math.floor(k / 7) % 2));
+}
 function mascotComment(ratio) { return t(ratio >= 0.8 ? "m_good" : ratio >= 0.5 ? "m_ok" : "m_try"); }
 
 /* ----- Початок ----- */
@@ -65,7 +71,7 @@ function screenDaily() {
   }).join("");
   if (td.done) {
     view(`<h1>${esc(t("daily_title"))}</h1>` + card(t("daily_finished", {score: td.score, max: DAY_MAX})) +
-      `<div class="card">${list}</div>` + btn("menu", t("btn_menu")));
+      mascotHtml(sciComment(td.score / DAY_MAX)) + `<div class="card">${list}</div>` + btn("menu", t("btn_menu")));
   } else {
     view(`<h1>${esc(t("daily_title"))}</h1>` + card(t("daily_intro", {total: DAILY.tasks})) +
       `<div class="card">${list}</div>` +
@@ -91,7 +97,7 @@ function screenTaskDone(sess) {
 function screenDayDone(info) {
   view(`<h1>🏁</h1>` +
     card(t("day_done", {score: info.score, max: DAY_MAX, streak: curStreak(), rating: rating(), total: P.total}) + (info.isBest ? t("day_best") : "")) +
-    mascotHtml(mascotComment(info.score / DAY_MAX)) + btn("top", t("btn_top")) + btn("menu", t("btn_menu"), "main"));
+    mascotHtml(sciComment(info.score / DAY_MAX)) + btn("top", t("btn_top")) + btn("menu", t("btn_menu"), "main"));
 }
 
 /* ----- Звичайне тренування (без балів) ----- */

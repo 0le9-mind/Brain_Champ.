@@ -214,6 +214,43 @@ function mkDigits(s) {
   });
 }
 
+
+// «Вікна хмарочоса»: запам'ятай, у яких вікнах горіло жовте світло
+function mkTower(s) {
+  const L = s.lvl, cols = [3, 3, 4, 4, 5][L - 1], rows = [4, 5, 5, 6, 7][L - 1], k = 2 + L;
+  const lit = new Set(sample(Array.from({length: cols * rows}, (_, i) => i), k));
+  const found = new Set();
+  let phase = "show";
+  return {
+    autoClock: false,
+    isReady: () => phase === "play",
+    keys: () => [...lit],
+    init(api) { api.later(() => { phase = "play"; api.startClock(); api.draw(); }, 1200 + 450 * k); },
+    render() {
+      const hint = phase === "show" ? t("p_tower_show") : t("p_tower_play", {n: found.size, k});
+      const cells = Array.from({length: cols * rows}, (_, i) => {
+        let cls = "";
+        if (phase === "show") cls = lit.has(i) ? "lit" : "";
+        else if (found.has(i)) cls = "lit";
+        else if (S.mark && S.mark.bad === i) cls = "bad";
+        else if (S.locked && lit.has(i)) cls = "miss";   // показати пропущені вікна
+        return {label: "&nbsp;", v: i, cls};
+      });
+      return `<div class="hint">${esc(hint)}</div><div class="tower"><div class="antenna"></div>` +
+        gridHtml(cols, cells, "win") + `<div class="door"></div></div>`;
+    },
+    tap(v, api) {
+      if (phase !== "play") return;
+      const i = Number(v);
+      if (found.has(i)) return;
+      if (lit.has(i)) {
+        found.add(i);
+        if (found.size >= k) api.finish(true); else { Snd.sfx("tick"); api.draw(); }
+      } else { S.mark = {bad: i}; api.finish(false); }
+    }
+  };
+}
+
 /* ---------- ЛОГІКА ---------- */
 function numSeq(level) {
   const kinds = ["arith", "geo"];
@@ -397,7 +434,7 @@ function mkOpposite(s) {
 
 const MAKERS = {
   math: mkMath, compare: mkCompare, missing: mkMissing, chain: mkChain,
-  memory: mkMemory, simon: mkSimon, vanish: mkVanish, digits: mkDigits,
+  memory: mkMemory, simon: mkSimon, vanish: mkVanish, digits: mkDigits, tower: mkTower,
   logic: mkLogic, odd: mkOdd, multiples: mkMultiples, extreme: mkExtreme,
   stroop: mkStroop, diff: mkDiff, count: mkCount, schulte: mkSchulte,
   reflex: mkReflex, target: mkTarget, opposite: mkOpposite
