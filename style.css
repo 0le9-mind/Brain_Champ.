@@ -54,3 +54,4 @@ input{width:100%;padding:14px;border-radius:12px;border:2px solid var(--card2);b
 .win.lit{background:#ffd33d;border-color:#ffe98a;box-shadow:0 0 12px 2px rgba(255,211,61,.65)}
 .win.bad{background:var(--bad);border-color:#ff9aa8}
 .win.miss{background:#0d1330;border-color:#ffd33d}
+.sci{border-left:4px solid var(--warn);font-size:15px}.sci .mut{margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em;font-size:12px}

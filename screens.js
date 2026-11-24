@@ -27,12 +27,23 @@ function bubbleText() {
 const mascotHtml = (text, withId) =>
   `<div class="mascot"><img class="mimg" src="mascot.jpg" alt="" data-act="tip"><div class="bubble" ${withId ? 'id="bubble"' : ""}>${esc(text)}</div></div>`;
 // Порівняння з видатними вченими за результатом щоденного тренування (стабільне протягом дня)
-function sciComment(ratio) {
+function sciPick(ratio) {
   const tier = ratio >= SCI.high ? ["einstein"] : ratio >= SCI.mid ? ["pascal", "newton"] : ["plato", "socrates", "aristotle"];
   const k = hashStr("sci:" + dateKey());
-  return t("sci_" + tier[k % tier.length] + "_" + (1 + Math.floor(k / 7) % 2));
+  const name = tier[k % tier.length];
+  return {name, text: t("sci_" + name + "_" + (1 + Math.floor(k / 7) % 2)), info: t("sci_info_" + name)};
 }
-function mascotComment(ratio) { return t(ratio >= 0.8 ? "m_good" : ratio >= 0.5 ? "m_ok" : "m_try"); }
+const sciComment = ratio => sciPick(ratio).text;
+// чоловічок порівнює з ученим, а нижче — коротка довідка про нього
+function sciHtml(ratio) {
+  const s = sciPick(ratio);
+  return mascotHtml(s.text) + `<div class="card sci"><div class="mut">${esc(t("sci_about"))}</div>${esc(s.info)}</div>`;
+}
+// Повідомлення після тренування залежно від кількості помилок
+function practiceComment(correct, rounds) {
+  const err = rounds - correct;
+  return t(err === 0 ? "pc_perfect" : err <= 2 ? "pc_good" : correct / rounds >= 0.4 ? "pc_mid" : "pc_poor");
+}
 
 /* ----- Початок ----- */
 function screenLang() {
@@ -71,7 +82,7 @@ function screenDaily() {
   }).join("");
   if (td.done) {
     view(`<h1>${esc(t("daily_title"))}</h1>` + card(t("daily_finished", {score: td.score, max: DAY_MAX})) +
-      mascotHtml(sciComment(td.score / DAY_MAX)) + `<div class="card">${list}</div>` + btn("menu", t("btn_menu")));
+      sciHtml(td.score / DAY_MAX) + `<div class="card">${list}</div>` + btn("menu", t("btn_menu")));
   } else {
     view(`<h1>${esc(t("daily_title"))}</h1>` + card(t("daily_intro", {total: DAILY.tasks})) +
       `<div class="card">${list}</div>` +
@@ -90,14 +101,14 @@ function screenTaskIntro(idx) {
 function screenTaskDone(sess) {
   view(`<h1>${esc(t("task_title", {n: sess.taskIdx + 1, total: DAILY.tasks}))}</h1>` +
     card(t("task_done", {game: t("g_" + sess.game), score: sess.score, max: TASK_MAX, correct: sess.correct, total: sess.rounds})) +
-    mascotHtml(mascotComment(sess.score / TASK_MAX)) +
+    mascotHtml(practiceComment(sess.correct, sess.rounds)) +
     btn("dstart", t("btn_next"), "main", `data-v="${sess.taskIdx + 1}"`) + btn("menu", t("btn_menu")));
 }
 
 function screenDayDone(info) {
   view(`<h1>🏁</h1>` +
     card(t("day_done", {score: info.score, max: DAY_MAX, streak: curStreak(), rating: rating(), total: P.total}) + (info.isBest ? t("day_best") : "")) +
-    mascotHtml(sciComment(info.score / DAY_MAX)) + btn("top", t("btn_top")) + btn("menu", t("btn_menu"), "main"));
+    sciHtml(info.score / DAY_MAX) + btn("top", t("btn_top")) + btn("menu", t("btn_menu"), "main"));
 }
 
 /* ----- Звичайне тренування (без балів) ----- */
@@ -119,7 +130,7 @@ function screenLevel(game) {
 function screenPracticeDone(sess) {
   view(`<h1>🏁</h1>` +
     card(t("practice_result", {game: t("g_" + sess.game), correct: sess.correct, total: sess.rounds})) +
-    mascotHtml(mascotComment(sess.correct / sess.rounds)) +
+    mascotHtml(practiceComment(sess.correct, sess.rounds)) +
     btn("plevel", t("btn_again"), "main", `data-v="${sess.game}" data-l="${sess.lvl}"`) +
     `<div class="row">${btn("pgame", t("choose_level"), "", `data-v="${sess.game}"`)}${btn("menu", t("btn_menu"))}</div>`);
 }
